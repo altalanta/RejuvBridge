@@ -23,6 +23,9 @@ Quickstart
 4) Train (single-node demo): `rejuvbridge train --config conf/train_demo.yaml`
 5) Launch UI: `rejuvbridge ui --host 0.0.0.0 --port 7860`
 
+Demo (one command)
+- `rejuvbridge demo` creates a tiny example tile, then ingests and prepares shards under `./data/`.
+
 Data Sources (public, suggested)
 - CAMELYON16, Human Protein Atlas images, EMPIAR Cryo-EM maps, a spatial transcriptomics/CITE-seq dataset.
 
@@ -36,4 +39,3 @@ Repo Structure
 
 License
 - MIT (see LICENSE)
-

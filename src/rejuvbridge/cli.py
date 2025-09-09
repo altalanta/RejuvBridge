@@ -5,6 +5,7 @@ from .data.pipeline import ingest_data, prepare_shards
 from .training.runner import train_from_config
 from .deploy.app import run_api
 from .ui.app import launch_ui
+from .utils.demo import write_embedded_tile
 
 app = typer.Typer(help="RejuvBridge CLI")
 
@@ -44,3 +45,19 @@ def ui(host: str = "0.0.0.0", port: int = 7860) -> None:
     """Launch the Gradio UI."""
     launch_ui(host, port)
 
+
+@app.command()
+def demo(workdir: str = ".") -> None:
+    """Create a tiny sample tile, ingest and prepare shards in WORKDIR."""
+    from pathlib import Path
+
+    wd = Path(workdir)
+    samples = wd / "samples"
+    raw = wd / "data" / "raw"
+    shards = wd / "data" / "shards"
+    samples.mkdir(parents=True, exist_ok=True)
+    tile_path = samples / "demo_tile.png"
+    write_embedded_tile(tile_path)
+    ingest_data(str(samples), str(raw))
+    prepare_shards(str(raw), str(shards), tile=256, stride=256)
+    print(f"Demo ready: {shards}")

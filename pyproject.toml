@@ -16,6 +16,7 @@ dependencies = [
   "pyarrow",
   "omegaconf",
   "hydra-core",
+  "typer>=0.9",
   "torch; platform_machine != 'arm64' or sys_platform != 'darwin'",
   "fastapi",
   "uvicorn",
@@ -43,4 +44,3 @@ where = ["src"]
 [tool.ruff]
 line-length = 100
 select = ["E","F","I"]
-
