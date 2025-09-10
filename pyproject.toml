@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rejuvbridge"
+version = "0.1.0"
+description = "Multimodal Imaging↔Omics ML, scalable and production-ready"
+readme = "README.md"
+authors = [{name = "RejuvBridge Maintainers"}]
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+dependencies = [
+  "numpy",
+  "pandas",
+  "omegaconf",
+  "hydra-core",
+  "typer>=0.9",
+  "tqdm",
+]
+
+[project.optional-dependencies]
+# Ensure pyarrow installs on Python 3.9 in CI matrix
+data = [
+  "pyarrow<17; python_version < \"3.10\"",
+  "pyarrow; python_version >= \"3.10\"",
+]
+api = ["fastapi", "uvicorn", "pydantic>=1.10,<3"]
+mlops = ["mlflow"]
+imaging = ["torch", "torchvision", "einops"]
+training = ["deepspeed", "ray[default]", "tensorboard", "scikit-learn"]
+ui = ["gradio"]
+dev = ["pytest", "pytest-cov", "ruff", "mypy"]
+
+[project.scripts]
+rejuvbridge = "rejuvbridge.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["rejuvbridge", "rejuvbridge.*"]
+
+[tool.ruff]
+line-length = 100
+select = ["E","F","I"]
