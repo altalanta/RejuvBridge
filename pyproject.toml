@@ -20,7 +20,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-data = ["pyarrow"]
+# Ensure pyarrow installs on Python 3.9 in CI matrix
+data = [
+  "pyarrow<17; python_version < \"3.10\"",
+  "pyarrow; python_version >= \"3.10\"",
+]
 api = ["fastapi", "uvicorn", "pydantic>=1.10,<3"]
 mlops = ["mlflow"]
 imaging = ["torch", "torchvision", "einops"]
