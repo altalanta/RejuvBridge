@@ -1,4 +1,5 @@
 from typing import List
+
 import torch
 import torch.nn as nn
 
@@ -11,7 +12,12 @@ def conv_block(in_ch: int, out_ch: int) -> nn.Sequential:
 
 
 class UNet2D(nn.Module):
-    def __init__(self, in_ch: int = 3, n_classes: int = 1, features: List[int] = [64, 128, 256, 512]):
+    def __init__(
+        self,
+        in_ch: int = 3,
+        n_classes: int = 1,
+        features: List[int] = [64, 128, 256, 512],
+    ):
         super().__init__()
         self.downs = nn.ModuleList()
         self.ups = nn.ModuleList()
@@ -41,8 +47,12 @@ class UNet2D(nn.Module):
             x = self.ups[i](x)
             skip = skips[i//2]
             if x.shape[-2:] != skip.shape[-2:]:
-                x = nn.functional.interpolate(x, size=skip.shape[-2:], mode="bilinear", align_corners=False)
+                x = nn.functional.interpolate(
+                    x,
+                    size=skip.shape[-2:],
+                    mode="bilinear",
+                    align_corners=False,
+                )
             x = torch.cat([skip, x], dim=1)
             x = self.ups[i+1](x)
         return self.head(x)
-

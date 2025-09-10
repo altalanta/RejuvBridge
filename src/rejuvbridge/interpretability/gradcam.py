@@ -1,9 +1,14 @@
 from typing import Tuple
+
 import torch
 import torch.nn as nn
 
 
-def grad_cam(model: nn.Module, x: torch.Tensor, target_layer: nn.Module) -> Tuple[torch.Tensor, torch.Tensor]:
+def grad_cam(
+    model: nn.Module,
+    x: torch.Tensor,
+    target_layer: nn.Module,
+) -> Tuple[torch.Tensor, torch.Tensor]:
     """Minimal Grad-CAM stub returning heatmap same HxW as input."""
     model.eval()
     feats = None
@@ -22,4 +27,3 @@ def grad_cam(model: nn.Module, x: torch.Tensor, target_layer: nn.Module) -> Tupl
     heat = grads.abs().mean(dim=1, keepdim=True)
     heat = (heat - heat.min()) / (heat.max() - heat.min() + 1e-6)
     return out.detach(), heat.detach()
-

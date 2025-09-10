@@ -1,6 +1,6 @@
+import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
-import uvicorn
 
 app = FastAPI(title="RejuvBridge Inference API")
 

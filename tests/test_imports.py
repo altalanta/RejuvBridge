@@ -1,6 +1,7 @@
 def test_imports():
     import rejuvbridge
     from rejuvbridge.cli import app
+
     # Data pipeline is part of core usage
     from rejuvbridge.data.pipeline import ingest_data, prepare_shards  # noqa: F401
     # API app is optional; skip if FastAPI not installed

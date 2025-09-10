@@ -1,26 +1,14 @@
 import base64
 from pathlib import Path
 
-
+# 1x1 transparent PNG (valid base64). Sufficient for demo pipeline.
 _EMBEDDED_TILE_BASE64 = (
-    b"iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAAB8N/0YAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ"
-    b"bWFnZVJlYWR5ccllPAAABzZJREFUeNrs3U1u2kYUgNGy//9b1zFJt7pXOM2m9s6OeG0Cw5s0n2pB"
-    b"X8V1dD7nGmM8c2nJYpB1x3z9mYH+gB9c2oAAACg3m9+8xgA6N9k3/8o5b1x9R0v2b6V6r9H3V3iP2"
-    b"z6m6Zc3d8wIAsF8P2eQm3tqX6f4H2w0AAEpf7p0k9oW8O4b7gYzV0QIAAAAt4yqf3xwAALy1Rr8E"
-    b"AJwAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAA"
-    b"cAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABw"
-    b"AADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaf8HAF2uN3m9tq1Z"
-    b"wzq3xq3j9w8ePHjw4cOHjx48ePDhwwcP7N+3f3Jr6V1o3wMA8Gm+fV7c9d7vW9W9z4r7bK5Xq+3f"
-    b"u7u7u7s7e3t7exsbGxsY7z9w8ePHjw4cOHjx48ePDhw0cBAPB5fX39+vXr9+/fv379+vXr9+9vAQ"
-    b"DAI3gF5V/7gIAwGgAAHAAAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHA"
-    b"AAOxpAABwAADsaQAAcAAA7GkAAHAAAOxpAABwAADsaQAAcAAA7GkAAHCAPwAA9y0jv1Q3Y2YAAAAA"
-    b"SUVORK5CYII="
+    b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
 )
 
 
 def write_embedded_tile(path: Path) -> None:
-    """Write a tiny 256x256 PNG tile to path (embedded base64 fallback)."""
+    """Write a tiny PNG tile to path (embedded base64)."""
     path.parent.mkdir(parents=True, exist_ok=True)
     data = base64.b64decode(_EMBEDDED_TILE_BASE64)
     path.write_bytes(data)
-

@@ -1,4 +1,5 @@
 from typer.testing import CliRunner
+
 from rejuvbridge.cli import app
 
 

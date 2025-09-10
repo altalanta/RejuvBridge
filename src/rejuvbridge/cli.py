@@ -1,5 +1,7 @@
-import typer
 from typing import Optional
+
+import typer
+
 from .utils.env import check_env
 
 app = typer.Typer(help="RejuvBridge CLI")
@@ -51,6 +53,8 @@ def ui(host: str = "0.0.0.0", port: int = 7860) -> None:
 def demo(workdir: str = ".") -> None:
     """Create a tiny sample tile, ingest and prepare shards in WORKDIR."""
     from pathlib import Path
+
+    from .data.pipeline import ingest_data, prepare_shards
     from .utils.demo import write_embedded_tile
 
     wd = Path(workdir)

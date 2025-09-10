@@ -1,5 +1,7 @@
-from typer.testing import CliRunner
 from pathlib import Path
+
+from typer.testing import CliRunner
+
 from rejuvbridge.cli import app
 
 

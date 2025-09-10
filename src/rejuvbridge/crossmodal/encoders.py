@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 import torch
 import torch.nn as nn
 
@@ -39,6 +40,8 @@ class ContrastiveAligner(nn.Module):
     def forward(self, v: torch.Tensor, o: torch.Tensor) -> torch.Tensor:
         logits = self.logit_scale.exp() * v @ o.t()
         targets = torch.arange(v.size(0), device=v.device)
-        loss = nn.functional.cross_entropy(logits, targets) + nn.functional.cross_entropy(logits.t(), targets)
+        loss = (
+            nn.functional.cross_entropy(logits, targets)
+            + nn.functional.cross_entropy(logits.t(), targets)
+        )
         return loss
-
