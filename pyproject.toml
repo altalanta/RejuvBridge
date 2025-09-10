@@ -13,22 +13,18 @@ requires-python = ">=3.9"
 dependencies = [
   "numpy",
   "pandas",
-  "pyarrow",
   "omegaconf",
   "hydra-core",
   "typer>=0.9",
-  "torch; platform_machine != 'arm64' or sys_platform != 'darwin'",
-  "fastapi",
-  "uvicorn",
-  "mlflow",
-  "scikit-learn",
-  "pydantic>=1.10,<3",
   "tqdm",
 ]
 
 [project.optional-dependencies]
-imaging = ["torchvision", "einops"]
-training = ["deepspeed", "ray[default]", "tensorboard"]
+data = ["pyarrow"]
+api = ["fastapi", "uvicorn", "pydantic>=1.10,<3"]
+mlops = ["mlflow"]
+imaging = ["torch", "torchvision", "einops"]
+training = ["deepspeed", "ray[default]", "tensorboard", "scikit-learn"]
 ui = ["gradio"]
 dev = ["pytest", "pytest-cov", "ruff", "mypy"]
 
