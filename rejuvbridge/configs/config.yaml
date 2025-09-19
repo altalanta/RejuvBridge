@@ -1,0 +1,6 @@
+# @package _global_
+
+defaults:
+  - data: synthetic
+  - train: cpu_fast
+  - paths: default

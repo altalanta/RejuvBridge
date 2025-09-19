@@ -1,0 +1,5 @@
+data_dir: data
+tiles_dir: data/synth_tiles
+omics_path: data/omics.parquet
+ckpt_dir: checkpoints
+reports_dir: reports
