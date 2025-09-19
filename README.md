@@ -1,41 +1,55 @@
-RejuvBridge — Multimodal Imaging↔Omics ML (Scalable)
+# RejuvBridge-lite
 
-Short
-- Open, production-grade repo to ingest EM/LM pathology tiles, align with spatial/scRNA-seq, and train distributed vision+omics models for cell-state mapping and protein-structure signal discovery. Ships with reproducible data pipelines, exascale-ready training, model registry, and an interpretable web UI for wet-lab teams.
+Synthetic cross-modal alignment demo that pairs toy histology tiles with gene expression vectors and trains a CLIP-style model for image↔omics retrieval.
 
-Highlights
-- Imaging models: 2D/3D U-Nets, ViT backbones; 3D CNN for Cryo-EM classification.
-- Cross-modal mapping: contrastive/CCA-inspired encoders for histology↔omics alignment; zero-shot transfer.
-- Data pipeline: Ingest → QC → tiling → WebDataset/Zarr sharding; Parquet metadata and data contracts.
-- Distributed training: PyTorch + FSDP/DeepSpeed (ZeRO-3), NCCL multi-node; AMP + checkpointing; Ray Train/K8s ready.
-- MLOps: MLflow registry + model cards; Hydra configs; CI/CD (lint, unit/integration, schema checks).
-- Interpretability: Grad-CAM/IG; feature probes vs known markers; uncertainty quantification.
-- Deployment: FastAPI service + Gradio UI (tile viewer, overlays, cross-plots); batch & streaming.
+> **Capabilities**: deterministic data generation, ResNet18 + MLP encoders, CLIP InfoNCE training, retrieval@K with bootstrap CIs, UMAP and Grad-CAM visual diagnostics.
+>
+>  **Not in scope**: clinical claims, whole-slide imaging pipelines, patient data, spatial transcriptomics, or deployment guidance.
 
-Install (dev)
-- pip: `pip install -e ".[dev]"`
-- pipx CLI: `pipx install .` then `rejuvbridge --help`
+## Quickstart
 
-Quickstart
-1) Validate environment: `rejuvbridge env`
-2) Ingest sample data (stubs): `rejuvbridge ingest --input ./samples --out ./data/raw`
-3) Tile and shard: `rejuvbridge prepare --raw ./data/raw --out ./data/shards`
-4) Train (single-node demo): `rejuvbridge train --config conf/train_demo.yaml`
-5) Launch UI: `rejuvbridge ui --host 0.0.0.0 --port 7860`
+```bash
+make env      # create virtualenv and install deps (CPU only)
+make data     # generate synthetic tiles + omics
+make train    # fit ResNet18 / MLP using InfoNCE (≤5 epochs)
+make eval     # retrieval metrics + UMAP + Grad-CAM
+make report   # assemble markdown report summarising outputs
+```
 
-Demo (one command)
-- `rejuvbridge demo` creates a tiny example tile, then ingests and prepares shards under `./data/`.
+All targets run on a laptop CPU in under 10 minutes. Outputs are reproducible thanks to fixed seeds.
 
-Data Sources (public, suggested)
-- CAMELYON16, Human Protein Atlas images, EMPIAR Cryo-EM maps, a spatial transcriptomics/CITE-seq dataset.
+## Project layout
 
-Repo Structure
-- `src/rejuvbridge/` — package modules (data, imaging, crossmodal, training, mlops, interpretability, deploy, cli, utils)
-- `conf/` — Hydra-style YAML configs
-- `api/` — FastAPI service
-- `ui/` — Gradio app
-- `tests/` — unit tests
-- `.github/workflows/ci.yml` — lint + tests
+```
+rejuvbridge/
+├── configs/            # Hydra configs for data/train/paths
+├── src/rejuvbridge/    # package with data, models, train/eval/infer utilities
+├── data/               # (generated) synthetic tiles + omics parquet
+├── checkpoints/        # CLIP checkpoint + metrics (post-train)
+├── reports/            # retrieval.json, umap.png, gradcam.png, README.md
+└── tests/              # pytest smoke tests (shapes, determinism, retrieval)
+```
 
-License
-- MIT (see LICENSE)
+## CI and testing
+
+Run the test suite locally or rely on the included GitHub Actions workflow:
+
+```bash
+pytest -q
+```
+
+The tests cover embedding shapes/L2 normalisation, deterministic training with fixed seeds, and retrieval quality beating random baselines.
+
+## Artifacts
+
+Pre-generated artifacts are checked into `reports/` so reviewers can inspect outputs without running the pipeline (if `umap-learn` is unavailable at runtime the pipeline automatically falls back to PCA for the joint embedding figure):
+
+- `reports/retrieval.json` – Retrieval@K metrics with bootstrap CIs.
+- `reports/umap.png` – UMAP projection of joint embeddings (images + omics).
+- `reports/gradcam.png` – Grad-CAM overlays highlighting salient tile regions.
+- `reports/README.md` – Short model card created by `make report`.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
