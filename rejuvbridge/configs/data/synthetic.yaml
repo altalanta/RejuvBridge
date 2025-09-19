@@ -1,0 +1,5 @@
+seed: 42
+img_size: 64
+n_tiles: 800
+n_genes: 200
+n_classes: 8
